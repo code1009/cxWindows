@@ -54,15 +54,8 @@ LRESULT MainWindow::onCommand(HWND hWnd, int id, HWND hWndCtl, UINT codeNotify)
     switch (id)
     {
     case IDM_ABOUT:
-    {
-        AboutDialog aboutDialog;
-        INT_PTR rv = showModalDialog(&aboutDialog, _hInstance, IDD_ABOUTBOX, hWnd);
-        if (IDCANCEL == rv)
-        {
-            MessageBoxW(hWnd, L"Dialog canceled.", L"확인", MB_OK);
-        }
-    }
-    break;
+        AppAbout();
+        break;
 
     case IDM_EXIT:
         DestroyWindow(hWnd);
@@ -101,6 +94,17 @@ LRESULT MainWindow::onDpiChanged(HWND hWnd, WPARAM wParam, LPARAM lParam)
 
     // TODO: 폰트/아이콘/레이아웃 등 DPI에 따른 리소스 재적용이 필요하면 여기서 수행
     return 0;
+}
+
+//===========================================================================
+void MainWindow::AppAbout(void)
+{
+    AboutDialog aboutDialog;
+    INT_PTR rv = showModalDialog(&aboutDialog, _hInstance, IDD_ABOUTBOX, _hWnd);
+    if (IDCANCEL == rv)
+    {
+        MessageBoxW(_hWnd, L"Dialog canceled.", L"확인", MB_OK);
+    }
 }
 
 

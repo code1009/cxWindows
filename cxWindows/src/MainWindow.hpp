@@ -22,6 +22,9 @@ public:
     LRESULT onPaint(HWND hWnd);
     LRESULT onCommand(HWND hWnd, int id, HWND hWndCtl, UINT codeNotify);
     LRESULT onDpiChanged(HWND hWnd, WPARAM wParam, LPARAM lParam);
+
+public:
+    void AppAbout(void);
 };
 
 
