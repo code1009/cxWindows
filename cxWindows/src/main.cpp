@@ -26,14 +26,19 @@ public:
 //===========================================================================
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    //-----------------------------------------------------------------------
     if (WM_NCCREATE == message)
     {
         auto userData = reinterpret_cast<CREATESTRUCTW*>(lParam)->lpCreateParams;
-        (reinterpret_cast<Window*>(userData))->_hWnd = hwnd;
-        ::SetWindowLongPtrW(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(userData));
+        if (userData)
+        {
+            (reinterpret_cast<Window*>(userData))->_hWnd = hwnd;
+            ::SetWindowLongPtrW(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(userData));
+        }
     }
 
 
+    //-----------------------------------------------------------------------
     auto window = reinterpret_cast<Window*>(::GetWindowLongPtrW(hwnd, GWLP_USERDATA));
     if (window)
     {
@@ -42,8 +47,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
         {
             ::SetWindowLongPtrW(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(nullptr));
         }
+
         return lResult;
     }
+
     return ::DefWindowProcW(hwnd, message, wParam, lParam);
 }
 
@@ -70,14 +77,19 @@ public:
 //===========================================================================
 INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    //-----------------------------------------------------------------------
     if (WM_INITDIALOG == message)
     {
         auto userData = reinterpret_cast<Dialog*>(lParam);
-        (reinterpret_cast<Dialog*>(userData))->_hDlg = hDlg;
-        ::SetWindowLongPtrW(hDlg, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(userData));
+        if (userData)
+        {
+            (reinterpret_cast<Dialog*>(userData))->_hDlg = hDlg;
+            ::SetWindowLongPtrW(hDlg, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(userData));
+        }
     }
 
 
+    //-----------------------------------------------------------------------
     auto dialog = reinterpret_cast<Dialog*>(::GetWindowLongPtrW(hDlg, GWLP_USERDATA));
     if (dialog)
     {
@@ -86,8 +98,10 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
         {
             ::SetWindowLongPtrW(hDlg, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(nullptr));
         }
+
         return static_cast<INT_PTR>(lResult);
     }
+
     return FALSE;
 }
 
@@ -121,6 +135,7 @@ ATOM registerWindowClass(HINSTANCE hInstance, LPCWSTR className, WORD idMenu, WO
 int messageLoop(HACCEL hAccelTable)
 {
     MSG msg;
+
     while (GetMessageW(&msg, nullptr, 0, 0))
     {
         if (!TranslateAcceleratorW(msg.hwnd, hAccelTable, &msg))
@@ -129,6 +144,7 @@ int messageLoop(HACCEL hAccelTable)
             DispatchMessageW(&msg);
         }
     }
+
     return (int)msg.wParam;
 }
 
@@ -150,8 +166,9 @@ public:
         switch (message)
         {
         case WM_INITDIALOG: return onInitDialog(hDlg, (HWND)wParam, lParam);
-        case WM_COMMAND:    return onCommand(hDlg, LOWORD(wParam), (HWND)lParam, HIWORD(wParam));
+        case WM_COMMAND: return onCommand(hDlg, LOWORD(wParam), (HWND)lParam, HIWORD(wParam));
         }
+
         return (INT_PTR)FALSE;
     }
 
@@ -160,6 +177,7 @@ public:
     {
         UNREFERENCED_PARAMETER(hWndFocus);
         UNREFERENCED_PARAMETER(lParam);
+
         return (INT_PTR)TRUE;
     }
 
@@ -167,13 +185,16 @@ public:
     {
         UNREFERENCED_PARAMETER(hWndCtl);
         UNREFERENCED_PARAMETER(codeNotify);
+
         switch (id)
         {
         case IDOK:
         case IDCANCEL:
             EndDialog(hDlg, id);
+
             return (INT_PTR)TRUE;
         }
+
         return (INT_PTR)FALSE;
     }
 };
@@ -199,13 +220,17 @@ public:
         case WM_PAINT: return onPaint(hWnd);
         case WM_COMMAND: return onCommand(hWnd, LOWORD(wParam), (HWND)lParam, HIWORD(wParam));
         }
+
         return ::DefWindowProcW(hWnd, message, wParam, lParam);
     }
 
 public:
     LRESULT onDestroy(HWND hWnd)
     {
+        UNREFERENCED_PARAMETER(hWnd);
+
         PostQuitMessage(0);
+
         return 0;
     }
 
@@ -215,6 +240,7 @@ public:
         HDC hdc = BeginPaint(hWnd, &ps);
 
         EndPaint(hWnd, &ps);
+
         return 0;
     }
 
@@ -222,6 +248,7 @@ public:
     {
         UNREFERENCED_PARAMETER(hWndCtl);
         UNREFERENCED_PARAMETER(codeNotify);
+
         switch (id)
         {
         case IDM_ABOUT:
@@ -254,7 +281,7 @@ public:
 
 /////////////////////////////////////////////////////////////////////////////
 //===========================================================================
-BOOL initMainWindow(MainWindow& window, HINSTANCE hInstance, int nCmdShow)
+bool initMainWindow(MainWindow& window, HINSTANCE hInstance, int nCmdShow)
 {
     //-----------------------------------------------------------------------
     const size_t MaxWindowClassName = 100;
@@ -285,16 +312,17 @@ BOOL initMainWindow(MainWindow& window, HINSTANCE hInstance, int nCmdShow)
         hInstance, 
         &window
     );
-
     if (!hWnd)
     {
-        return FALSE;
+        return false;
     }
 
+
+    //-----------------------------------------------------------------------
     ShowWindow(hWnd, nCmdShow);
     UpdateWindow(hWnd);
 
-    return TRUE;
+    return true;
 }
 
 
@@ -320,9 +348,44 @@ bool initApplication(HINSTANCE hInstance)
     {
         return false;
     }
+
     return true;
 }
 
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//===========================================================================
+int windowsEntryPoint(HINSTANCE hInstance, int nCmdShow)
+{
+    //-----------------------------------------------------------------------
+    bool rv;
+
+
+    //-----------------------------------------------------------------------
+    rv = initApplication(hInstance);
+    if (!rv)
+    {
+        return -1;
+    }
+
+
+    //-----------------------------------------------------------------------
+    MainWindow mainWindow;
+    rv = initMainWindow(mainWindow, hInstance, nCmdShow);
+    if (!rv)
+    {
+        return -1;
+    }
+
+
+    //-----------------------------------------------------------------------
+    HACCEL hAccelTable = LoadAcceleratorsW(hInstance, MAKEINTRESOURCEW(IDC_MAIN));
+
+    return messageLoop(hAccelTable);
+}
 
 
 
@@ -340,20 +403,9 @@ int APIENTRY wWinMain
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    bool rv;
-
-	rv = initApplication(hInstance);
-    if (!rv)
-    {
-        return FALSE;
-    }
-
-	MainWindow mainWindow;
-    if (!initMainWindow(mainWindow, hInstance, nCmdShow))
-    {
-        return FALSE;
-    }
-
-    HACCEL hAccelTable = LoadAcceleratorsW(hInstance, MAKEINTRESOURCEW(IDC_MAIN));
-	return messageLoop(hAccelTable);
+    return windowsEntryPoint(hInstance, nCmdShow);
 }
+
+
+
+
