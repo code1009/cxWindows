@@ -219,6 +219,7 @@ public:
         case WM_DESTROY: return onDestroy(hWnd);
         case WM_PAINT: return onPaint(hWnd);
         case WM_COMMAND: return onCommand(hWnd, LOWORD(wParam), (HWND)lParam, HIWORD(wParam));
+        case WM_DPICHANGED: return onDpiChanged(hWnd, wParam, lParam);
         }
 
         return ::DefWindowProcW(hWnd, message, wParam, lParam);
@@ -271,6 +272,34 @@ public:
             return ::DefWindowProcW(hWnd, WM_COMMAND, id, reinterpret_cast<LPARAM>(hWndCtl));
         }
 
+        return 0;
+    }
+
+    LRESULT onDpiChanged(HWND hWnd, WPARAM wParam, LPARAM lParam)
+    {
+        UINT dpiX = LOWORD(wParam);
+        UINT dpiY = HIWORD(wParam);
+
+        // 내부 DPI 갱신 (X 기준 사용)
+        //_dpi = dpiX;
+
+        // lParam은 RECT* (권장 새 위치/크기)
+        if (lParam)
+        {
+            RECT* suggestedRect = reinterpret_cast<RECT*>(lParam);
+            int width = suggestedRect->right - suggestedRect->left;
+            int height = suggestedRect->bottom - suggestedRect->top;
+
+            SetWindowPos(
+                hWnd, 
+                nullptr, 
+                suggestedRect->left, suggestedRect->top, 
+                width, height, 
+                SWP_NOZORDER | SWP_NOACTIVATE
+            );
+        }
+
+        // TODO: 폰트/아이콘/레이아웃 등 DPI에 따른 리소스 재적용이 필요하면 여기서 수행
         return 0;
     }
 };
