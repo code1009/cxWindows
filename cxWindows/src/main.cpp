@@ -361,7 +361,7 @@ bool initMainWindow(MainWindow& window, HINSTANCE hInstance, int nCmdShow)
 
 /////////////////////////////////////////////////////////////////////////////
 //===========================================================================
-bool initApplication(HINSTANCE hInstance)
+bool initWindowClass(HINSTANCE hInstance)
 {
     //-----------------------------------------------------------------------
     const size_t MaxWindowClassName = 100;
@@ -394,7 +394,7 @@ int windowsEntryPoint(HINSTANCE hInstance, int nCmdShow)
 
 
     //-----------------------------------------------------------------------
-    rv = initApplication(hInstance);
+    rv = initWindowClass(hInstance);
     if (!rv)
     {
         return -1;
