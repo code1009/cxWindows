@@ -15,7 +15,7 @@ public:
     virtual ~MainWindow() = default;
 
 public:
-    LRESULT onMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+    virtual LRESULT onMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) override;
 
 public:
     LRESULT onDestroy(HWND hWnd);

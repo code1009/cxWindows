@@ -15,7 +15,7 @@ public:
 	virtual ~AboutDialog() = default;
 
 public:
-    INT_PTR onMessage(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+    virtual INT_PTR onMessage(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) override
     {
         switch (message)
         {
