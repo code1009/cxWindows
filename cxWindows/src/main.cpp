@@ -152,6 +152,20 @@ int messageLoop(HACCEL hAccelTable)
 
 
 
+
+/////////////////////////////////////////////////////////////////////////////
+//===========================================================================
+INT_PTR showModalDialog(Dialog* dialog, HINSTANCE hInstance, WORD idDialogTemplate, HWND hParentWindow = nullptr)
+{
+    dialog->_hInstance = hInstance;
+    INT_PTR rv = DialogBoxParamW(hInstance, MAKEINTRESOURCE(idDialogTemplate), hParentWindow, DialogProc, reinterpret_cast<LPARAM>(dialog));
+	return rv;
+}
+
+
+
+
+
 /////////////////////////////////////////////////////////////////////////////
 //===========================================================================
 class AboutDialog : public Dialog
@@ -255,8 +269,7 @@ public:
         case IDM_ABOUT:
             {
                 AboutDialog aboutDialog;
-                aboutDialog._hInstance = _hInstance;
-                INT_PTR rv = DialogBoxParamW(_hInstance, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, DialogProc, reinterpret_cast<LPARAM>(&aboutDialog));
+                INT_PTR rv = showModalDialog(&aboutDialog, _hInstance, IDD_ABOUTBOX, hWnd);
                 if (IDCANCEL == rv)
                 {
                     MessageBoxW(hWnd, L"Dialog canceled.", L"확인", MB_OK);
@@ -387,7 +400,7 @@ bool initWindowClass(HINSTANCE hInstance)
 
 /////////////////////////////////////////////////////////////////////////////
 //===========================================================================
-int windowsEntryPoint(HINSTANCE hInstance, int nCmdShow)
+int windowEntryPoint(HINSTANCE hInstance, int nCmdShow)
 {
     //-----------------------------------------------------------------------
     bool rv;
@@ -432,7 +445,7 @@ int APIENTRY wWinMain
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    return windowsEntryPoint(hInstance, nCmdShow);
+    return windowEntryPoint(hInstance, nCmdShow);
 }
 
 
