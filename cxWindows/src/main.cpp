@@ -4,7 +4,8 @@
 
 #include "../res/resource.h"
 
-#include "MainWindow.hpp"
+#include "View.hpp"
+#include "MainFrame.hpp"
 
 
 
@@ -19,7 +20,7 @@ int windowEntryPoint(HINSTANCE hInstance, int nCmdShow)
 
 
     //-----------------------------------------------------------------------
-    rv = initMainWindowClass(hInstance);
+    rv = initMainFrameClass(hInstance);
     if (!rv)
     {
         return -1;
@@ -27,8 +28,8 @@ int windowEntryPoint(HINSTANCE hInstance, int nCmdShow)
 
 
     //-----------------------------------------------------------------------
-    MainWindow mainWindow;
-    rv = initMainWindow(mainWindow, hInstance, nCmdShow);
+    MainFrame MainFrame;
+    rv = initMainFrame(MainFrame, hInstance, nCmdShow);
     if (!rv)
     {
         return -1;
@@ -36,7 +37,7 @@ int windowEntryPoint(HINSTANCE hInstance, int nCmdShow)
 
 
     //-----------------------------------------------------------------------
-    HACCEL hAccelTable = LoadAcceleratorsW(hInstance, MAKEINTRESOURCEW(IDC_MAIN));
+    HACCEL hAccelTable = LoadAcceleratorsW(hInstance, MAKEINTRESOURCEW(IDR_MAINFRAME));
 
     return messageLoop(hAccelTable);
 }
@@ -57,7 +58,13 @@ int APIENTRY wWinMain
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    return windowEntryPoint(hInstance, nCmdShow);
+    int rv;
+
+    OutputDebugStringW(L"wWinMain(): begin\n");
+    rv = windowEntryPoint(hInstance, nCmdShow);
+    OutputDebugStringW(L"wWinMain(): end\n");
+
+	return rv;
 }
 
 

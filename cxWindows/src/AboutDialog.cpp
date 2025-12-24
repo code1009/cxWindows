@@ -16,14 +16,14 @@ INT_PTR AboutDialog::onMessage(HWND hDlg, UINT message, WPARAM wParam, LPARAM lP
 {
     switch (message)
     {
-    case WM_INITDIALOG: return onInitDialog(hDlg, (HWND)wParam, lParam);
-    case WM_COMMAND: return onCommand(hDlg, LOWORD(wParam), (HWND)lParam, HIWORD(wParam));
+    case WM_INITDIALOG: return onInitDialog((HWND)wParam, lParam);
+    case WM_COMMAND: return onCommand(LOWORD(wParam), (HWND)lParam, HIWORD(wParam));
     }
 
     return (INT_PTR)FALSE;
 }
 
-INT_PTR AboutDialog::onInitDialog(HWND hDlg, HWND hWndFocus, LPARAM lParam)
+INT_PTR AboutDialog::onInitDialog(HWND hWndFocus, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(hWndFocus);
     UNREFERENCED_PARAMETER(lParam);
@@ -31,7 +31,7 @@ INT_PTR AboutDialog::onInitDialog(HWND hDlg, HWND hWndFocus, LPARAM lParam)
     return (INT_PTR)TRUE;
 }
 
-INT_PTR AboutDialog::onCommand(HWND hDlg, int id, HWND hWndCtl, UINT codeNotify)
+INT_PTR AboutDialog::onCommand(int id, HWND hWndCtl, UINT codeNotify)
 {
     UNREFERENCED_PARAMETER(hWndCtl);
     UNREFERENCED_PARAMETER(codeNotify);
@@ -40,7 +40,7 @@ INT_PTR AboutDialog::onCommand(HWND hDlg, int id, HWND hWndCtl, UINT codeNotify)
     {
     case IDOK:
     case IDCANCEL:
-        EndDialog(hDlg, id);
+        EndDialog(_hDlg, id);
 
         return (INT_PTR)TRUE;
     }

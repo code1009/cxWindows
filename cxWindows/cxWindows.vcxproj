@@ -21,20 +21,22 @@
   <ItemGroup>
     <ClCompile Include="src\AboutDialog.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\MainWindow.cpp" />
+    <ClCompile Include="src\MainFrame.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Window.cpp" />
+    <ClCompile Include="src\View.cpp" />
+    <ClCompile Include="src\WindowCore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\resource.h" />
     <ClInclude Include="src\AboutDialog.hpp" />
-    <ClInclude Include="src\MainWindow.hpp" />
+    <ClInclude Include="src\MainFrame.hpp" />
     <ClInclude Include="src\pch.hpp" />
     <ClInclude Include="src\targetver.h" />
-    <ClInclude Include="src\Window.hpp" />
+    <ClInclude Include="src\View.hpp" />
+    <ClInclude Include="src\WindowCore.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res\Application.rc" />

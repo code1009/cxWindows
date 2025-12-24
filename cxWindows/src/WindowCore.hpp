@@ -65,9 +65,9 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 ATOM registerWindowClass(
     HINSTANCE hInstance,
     LPCWSTR className,
-    WORD idMenu,
-    WORD idIcon,
-    WORD idIconSmall,
+    WORD idMenu = 0,
+    WORD idIcon = 0,
+    WORD idIconSmall = 0,
     UINT style = CS_HREDRAW | CS_VREDRAW
 );
 
@@ -80,7 +80,4 @@ int messageLoop(HACCEL hAccelTable);
 /////////////////////////////////////////////////////////////////////////////
 //===========================================================================
 INT_PTR showModalDialog(Dialog* dialog, HINSTANCE hInstance, WORD idDialogTemplate, HWND hParentWindow = nullptr);
-
-
-
-
+std::wstring getResourceString(WORD id, HINSTANCE hInstance);

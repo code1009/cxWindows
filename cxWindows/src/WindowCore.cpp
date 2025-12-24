@@ -91,12 +91,12 @@ ATOM registerWindowClass(HINSTANCE hInstance, LPCWSTR className, WORD idMenu, WO
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = hInstance;
-    wcex.hIcon = LoadIconW(hInstance, MAKEINTRESOURCEW(idIcon));
+    wcex.hIcon = (idIcon==0) ? nullptr : LoadIconW(hInstance, MAKEINTRESOURCEW(idIcon));
     wcex.hCursor = LoadCursorW(nullptr, IDC_ARROW);
     wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-    wcex.lpszMenuName = MAKEINTRESOURCEW(idMenu);
+    wcex.lpszMenuName = (idMenu==0) ? nullptr : MAKEINTRESOURCEW(idMenu);
     wcex.lpszClassName = className;
-    wcex.hIconSm = LoadIconW(wcex.hInstance, MAKEINTRESOURCEW(idIconSmall));
+    wcex.hIconSm = (idIconSmall==0) ? nullptr : LoadIconW(wcex.hInstance, MAKEINTRESOURCEW(idIconSmall));
 
     return RegisterClassExW(&wcex);
 }
@@ -130,3 +130,37 @@ INT_PTR showModalDialog(Dialog* dialog, HINSTANCE hInstance, WORD idDialogTempla
     INT_PTR rv = DialogBoxParamW(hInstance, MAKEINTRESOURCE(idDialogTemplate), hParentWindow, DialogProc, reinterpret_cast<LPARAM>(dialog));
 	return rv;
 }
+
+std::wstring getResourceString(WORD id, HINSTANCE hInstance)
+{
+    //-----------------------------------------------------------------------
+    LPWSTR ptr;
+    LPWSTR* pptr;
+    int rv;
+
+
+    ptr = nullptr;
+    pptr = &ptr;
+    rv = ::LoadStringW(hInstance,
+        id,
+        (LPWSTR)pptr,
+        0
+    );
+
+
+    std::wstring s;
+
+
+    if (rv)
+    {
+        if (ptr)
+        {
+            s = ptr;
+        }
+    }
+
+    return s;
+}
+
+
+

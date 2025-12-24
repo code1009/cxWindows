@@ -12,16 +12,19 @@
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Window.cpp">
+    <ClCompile Include="src\WindowCore.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\MainWindow.cpp">
+    <ClCompile Include="src\MainFrame.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\AboutDialog.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\View.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,7 +35,7 @@
     <ClInclude Include="res\resource.h">
       <Filter>res</Filter>
     </ClInclude>
-    <ClInclude Include="src\Window.hpp">
+    <ClInclude Include="src\WindowCore.hpp">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.hpp">
@@ -41,7 +44,10 @@
     <ClInclude Include="src\AboutDialog.hpp">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\MainWindow.hpp">
+    <ClInclude Include="src\MainFrame.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\View.hpp">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

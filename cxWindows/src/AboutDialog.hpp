@@ -18,6 +18,6 @@ public:
     virtual INT_PTR onMessage(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) override;
 
 public:
-    INT_PTR onInitDialog(HWND hDlg, HWND hWndFocus, LPARAM lParam);
-    INT_PTR onCommand(HWND hDlg, int id, HWND hWndCtl, UINT codeNotify);
+    INT_PTR onInitDialog(HWND hWndFocus, LPARAM lParam);
+    INT_PTR onCommand(int id, HWND hWndCtl, UINT codeNotify);
 };

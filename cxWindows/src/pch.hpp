@@ -13,7 +13,11 @@
 #include <memory.h>
 #include <tchar.h>
 
-#include "Window.hpp"
+// CPP 런타임 헤더 파일입니다.
+#include <string>
+
+// cxWindows 헤더 파일입니다.
+#include "WindowCore.hpp"
 
 
 
