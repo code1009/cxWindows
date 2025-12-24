@@ -71,11 +71,15 @@ LRESULT View::onPaint(HDC hBkDC)
 
     FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
 
+    RECT rcClient;
+
+    GetClientRect(_hWnd, &rcClient);
+
     DrawTextW(
         hdc,
         L"Hello, cxWindows!",
         -1,
-        &ps.rcPaint,
+        &rcClient,
         DT_CENTER | DT_VCENTER | DT_SINGLELINE	
     );
 
