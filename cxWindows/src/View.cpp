@@ -41,6 +41,10 @@ LRESULT View::onNcCreate(LPCREATESTRUCT lpCreateStruct)
 {
     OutputDebugStringW(L"View::onNcCreate() - begin\n");
 
+    if (lpCreateStruct->lpszName)
+    {
+        SetWindowTextW(_hWnd, lpCreateStruct->lpszName);
+    }
 
     OutputDebugStringW(L"View::onNcCreate() - end\n");
 
@@ -79,6 +83,7 @@ LRESULT View::onClose()
 {
     OutputDebugStringW(L"View::onClose() - begin\n");
 
+    DestroyWindow(_hWnd);
 
     OutputDebugStringW(L"View::onClose() - end\n");
 
@@ -91,19 +96,7 @@ LRESULT View::onPaint(HDC hBkDC)
 
     HDC hdc = BeginPaint(_hWnd, &ps);
 
-    FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
-
-    RECT rcClient;
-
-    GetClientRect(_hWnd, &rcClient);
-
-    DrawTextW(
-        hdc,
-        L"Hello, cxWindows!",
-        -1,
-        &rcClient,
-        DT_CENTER | DT_VCENTER | DT_SINGLELINE	
-    );
+	draw(hdc, &ps.rcPaint);
 
     EndPaint(_hWnd, &ps);
 
@@ -148,7 +141,24 @@ LRESULT View::onDpiChanged(UINT dpiX, UINT dpiY, RECT* suggestedRect)
     return 0;
 }
 
+//===========================================================================
+void View::draw(HDC hdc, RECT* clipRect)
+{
+    FillRect(hdc, clipRect, (HBRUSH)(COLOR_WINDOW + 1));
 
+
+    RECT rcClient;
+    GetClientRect(_hWnd, &rcClient);
+
+
+    DrawTextW(
+        hdc,
+        L"Hello, cxWindows!",
+        -1,
+        &rcClient,
+        DT_CENTER | DT_VCENTER | DT_SINGLELINE
+    );
+}
 
 
 

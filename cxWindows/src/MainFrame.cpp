@@ -46,6 +46,10 @@ LRESULT MainFrame::onNcCreate(LPCREATESTRUCT lpCreateStruct)
 {
     OutputDebugStringW(L"MainFrame::onNcCreate() - begin\n");
 
+    if (lpCreateStruct->lpszName)
+    {
+        SetWindowTextW(_hWnd, lpCreateStruct->lpszName);
+    }
 
     OutputDebugStringW(L"MainFrame::onNcCreate() - end\n");
 
@@ -205,7 +209,7 @@ bool initMainFrame(MainFrame& window, HINSTANCE hInstance, int nCmdShow)
 
 
     //-----------------------------------------------------------------------
-	std::wstring title = getResourceString(IDS_APP_TITLE, hInstance);
+    std::wstring _Title = getResourceString(IDS_APP_TITLE, hInstance);
 
 
     //-----------------------------------------------------------------------
@@ -216,7 +220,7 @@ bool initMainFrame(MainFrame& window, HINSTANCE hInstance, int nCmdShow)
     HWND hWnd = CreateWindowExW(
 		0,
         MainFrame_WindowClassName,
-        title.c_str(),
+        _Title.c_str(),
         WS_OVERLAPPEDWINDOW,
         0, 0, CW_USEDEFAULT, CW_USEDEFAULT, 
         nullptr, nullptr, 
