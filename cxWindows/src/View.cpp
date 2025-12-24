@@ -172,7 +172,7 @@ bool initView(View& window, HINSTANCE hInstance, HWND hParentWnd)
 bool initViewClass(HINSTANCE hInstance)
 {
     ATOM atom;
-    atom = registerWindowClass(hInstance, View_WindowClassName, IDR_MAINFRAME, IDI_APP, IDI_APP_SMALL);
+    atom = registerWindowClass(hInstance, View_WindowClassName);
     if (0 == atom)
     {
         return false;
