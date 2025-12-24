@@ -33,10 +33,11 @@ LRESULT MainFrame::onMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
     case WM_CREATE: return onCreate((LPCREATESTRUCT)lParam);
     case WM_DESTROY: return onDestroy();
     case WM_CLOSE: return onClose();
+    case WM_DPICHANGED: return onDpiChanged(LOWORD(wParam), HIWORD(wParam), (RECT*)lParam);
+    case WM_SIZE: return onSize((UINT)wParam, LOWORD(lParam), HIWORD(lParam));
+    case WM_ERASEBKGND: return onEraseBkgnd((HDC)wParam);
     case WM_PAINT: return onPaint((HDC)wParam);
     case WM_COMMAND: return onCommand(LOWORD(wParam), (HWND)lParam, HIWORD(wParam));
-    case WM_DPICHANGED: return onDpiChanged(LOWORD(wParam), HIWORD(wParam), (RECT*)lParam);
-	case WM_SIZE: return onSize((UINT)wParam, LOWORD(lParam), HIWORD(lParam));
     }
 
     return ::DefWindowProcW(hWnd, message, wParam, lParam);
@@ -104,6 +105,63 @@ LRESULT MainFrame::onClose()
     return 0;
 }
 
+LRESULT MainFrame::onDpiChanged(UINT dpiX, UINT dpiY, RECT* suggestedRect)
+{
+    //-----------------------------------------------------------------------
+    OutputDebugStringW(L"MainFrame::onDpiChanged()\n");
+
+
+    //-----------------------------------------------------------------------
+    if (suggestedRect)
+    {
+        int width = suggestedRect->right - suggestedRect->left;
+        int height = suggestedRect->bottom - suggestedRect->top;
+
+        SetWindowPos(
+            _hWnd,
+            nullptr,
+            suggestedRect->left, suggestedRect->top,
+            width, height,
+            SWP_NOZORDER | SWP_NOACTIVATE
+        );
+    }
+
+
+    //-----------------------------------------------------------------------
+    if (_View._hWnd)
+    {
+		SendMessageW(_View._hWnd, WM_DPICHANGED, MAKELPARAM(dpiX, dpiY), (LPARAM)nullptr);
+    }
+
+    return 0;
+}
+
+LRESULT MainFrame::onSize(UINT type, UINT width, UINT height)
+{
+    RECT rcClient;
+
+    GetClientRect(_hWnd, &rcClient);
+
+    if (_View._hWnd)
+    {
+        SetWindowPos(
+            _View._hWnd,
+            nullptr,
+            0, 0,
+            rcClient.right - rcClient.left,
+            rcClient.bottom - rcClient.top,
+            SWP_NOZORDER | SWP_NOACTIVATE
+        );
+    }
+
+    return 0;
+}
+
+LRESULT MainFrame::onEraseBkgnd(HDC hdc)
+{
+    return 0;
+}
+
 LRESULT MainFrame::onPaint(HDC hBkDC)
 {
     PAINTSTRUCT ps;
@@ -137,52 +195,6 @@ LRESULT MainFrame::onCommand(int id, HWND hWndCtl, UINT codeNotify)
     }
 
     return 0;
-}
-
-LRESULT MainFrame::onDpiChanged(UINT dpiX, UINT dpiY, RECT* suggestedRect)
-{
-    //-----------------------------------------------------------------------
-    OutputDebugStringW(L"MainFrame::onDpiChanged()\n");
-
-
-    //-----------------------------------------------------------------------
-    if (suggestedRect)
-    {
-        int width = suggestedRect->right - suggestedRect->left;
-        int height = suggestedRect->bottom - suggestedRect->top;
-
-        SetWindowPos(
-            _hWnd,
-            nullptr,
-            suggestedRect->left, suggestedRect->top,
-            width, height,
-            SWP_NOZORDER | SWP_NOACTIVATE
-        );
-    }
-
-    // TODO: 폰트/아이콘/레이아웃 등 DPI에 따른 리소스 재적용이 필요하면 여기서 수행
-    return 0;
-}
-
-LRESULT MainFrame::onSize(UINT type, UINT width, UINT height)
-{
-    RECT rcClient;
-	
-    GetClientRect(_hWnd, &rcClient);
-
-    if (_View._hWnd)
-    {
-        SetWindowPos(
-            _View._hWnd,
-            nullptr,
-            0, 0,
-            rcClient.right - rcClient.left,
-            rcClient.bottom - rcClient.top,
-            SWP_NOZORDER | SWP_NOACTIVATE
-        );
-    }
-
-	return 0;
 }
 
 //===========================================================================

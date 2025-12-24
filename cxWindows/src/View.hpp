@@ -23,9 +23,11 @@ public:
     LRESULT onCreate(LPCREATESTRUCT lpCreateStruct);
     LRESULT onDestroy();
     LRESULT onClose();
+    LRESULT onDpiChanged(UINT dpiX, UINT dpiY, RECT* suggestedRect);
+    LRESULT onSize(UINT type, UINT width, UINT height);
+	LRESULT onEraseBkgnd(HDC hdc);
     LRESULT onPaint(HDC hBkDC);
     LRESULT onCommand(int id, HWND hWndCtl, UINT codeNotify);
-    LRESULT onDpiChanged(UINT dpiX, UINT dpiY, RECT* suggestedRect);
 
 public:
 	void draw(HDC hdc, RECT* clipRect);
