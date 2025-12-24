@@ -28,6 +28,8 @@ LRESULT MainFrame::onMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 {
     switch (message)
     {
+    case WM_NCCREATE: return onNcCreate((LPCREATESTRUCT)lParam);
+    case WM_NCDESTROY: return onNcDestroy();
     case WM_CREATE: return onCreate((LPCREATESTRUCT)lParam);
     case WM_DESTROY: return onDestroy();
     case WM_CLOSE: return onClose();
@@ -38,6 +40,26 @@ LRESULT MainFrame::onMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
     }
 
     return ::DefWindowProcW(hWnd, message, wParam, lParam);
+}
+
+LRESULT MainFrame::onNcCreate(LPCREATESTRUCT lpCreateStruct)
+{
+    OutputDebugStringW(L"MainFrame::onNcCreate() - begin\n");
+
+
+    OutputDebugStringW(L"MainFrame::onNcCreate() - end\n");
+
+    return 1;
+}
+
+LRESULT MainFrame::onNcDestroy()
+{
+    OutputDebugStringW(L"MainFrame::onNcDestroy() - begin\n");
+
+
+    OutputDebugStringW(L"MainFrame::onNcDestroy() - end\n");
+
+    return 0;
 }
 
 LRESULT MainFrame::onCreate(LPCREATESTRUCT lpCreateStruct)

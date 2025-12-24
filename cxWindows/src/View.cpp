@@ -24,6 +24,8 @@ LRESULT View::onMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+    case WM_NCCREATE: return onNcCreate((LPCREATESTRUCT)lParam);
+    case WM_NCDESTROY: return onNcDestroy();
     case WM_CREATE: return onCreate((LPCREATESTRUCT)lParam);
     case WM_DESTROY: return onDestroy();
     case WM_CLOSE: return onClose();
@@ -33,6 +35,26 @@ LRESULT View::onMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     }
 
     return ::DefWindowProcW(hWnd, message, wParam, lParam);
+}
+
+LRESULT View::onNcCreate(LPCREATESTRUCT lpCreateStruct)
+{
+    OutputDebugStringW(L"View::onNcCreate() - begin\n");
+
+
+    OutputDebugStringW(L"View::onNcCreate() - end\n");
+
+    return 1;
+}
+
+LRESULT View::onNcDestroy()
+{
+    OutputDebugStringW(L"View::onNcDestroy() - begin\n");
+
+
+    OutputDebugStringW(L"View::onNcDestroy() - end\n");
+
+    return 0;
 }
 
 LRESULT View::onCreate(LPCREATESTRUCT lpCreateStruct)

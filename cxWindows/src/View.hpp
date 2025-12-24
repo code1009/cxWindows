@@ -18,6 +18,8 @@ public:
     virtual LRESULT onMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) override;
 
 public:
+    LRESULT onNcCreate(LPCREATESTRUCT lpCreateStruct);
+    LRESULT onNcDestroy();
     LRESULT onCreate(LPCREATESTRUCT lpCreateStruct);
     LRESULT onDestroy();
     LRESULT onClose();
